@@ -6,19 +6,16 @@ Created on Wed May 18 09:33:53 2022
 """
 
 import os
-import pickle
 import datetime
-import numpy as np
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
 from tensorflow.keras.callbacks import EarlyStopping
-from sklearn.metrics import ConfusionMatrixDisplay
 from sklearn.preprocessing import MinMaxScaler
 from tensorflow.keras import Sequential
-from tensorflow.keras.layers import Input, Dense, Dropout, BatchNormalization
+from tensorflow.keras.layers import Dense, Dropout, BatchNormalization
 from tensorflow.keras.callbacks import TensorBoard
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LogisticRegression
@@ -99,12 +96,13 @@ y = train['Segmentation'] # target
 # Step 5) Data Pre-processing
 
 # Min Max Scaler
-#mms_scaler = MinMaxScaler()
-#x = mms_scaler.fit_transform(x)
+mms_scaler = MinMaxScaler()
+x = mms_scaler.fit_transform(x)
 
 x_train, x_test, y_train, y_test = train_test_split(x,y, test_size=0.2, 
                                                     random_state=0)
 
+# Check the accuracy using machine learning
 # Standard scaler
 sc = StandardScaler()
 x_train = sc.fit_transform(x_train)
@@ -127,12 +125,12 @@ print(cm)
 print(class_report)
 print("The model accuracy is:" ,score*100,)
 
-#%% Callback
+#%% Callback  for DL
 
 log_dir = os.path.join(LOG_PATH, datetime.datetime.now().strftime('%Y%m%d-%H%M%S'))
 
 # tensorboard callback
-tensorboard_callback = TensorBoard(log_dir=log_dir)
+tensorboard_callback = TensorBoard(log_dir=log_dir, histogram_freq=1)
 
 # early stopping callback
 early_stopping_callback = EarlyStopping(monitor='loss', patience=10)
