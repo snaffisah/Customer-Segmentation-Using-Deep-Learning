@@ -47,7 +47,15 @@ Sequential model with 3 dense layers and 1 output were used in this analysis:
   <img width="440" src="https://github.com/snaffisah/Customer-Segmentation-Using-Deep-Learning/blob/main/Image/model%20summary.JPG">
 </p>
 
-Model was trained until epoch 11 with loss: 1.6185, mse: 1.6185, val_loss: 1.5911, val_mse: 1.5911 and a STRAIGHT LINE GRAPH were produce =(
+Workflow using Tensorboard:
+<p align="center">
+  <img  src="https://github.com/snaffisah/Customer-Segmentation-Using-Deep-Learning/blob/main/Image/inputflow.JPG">
+</p>
+<p align="center">
+  <img width="540" src="https://github.com/snaffisah/Customer-Segmentation-Using-Deep-Learning/blob/main/Image/dense.JPG">
+</p>
+
+Model was trained until epoch 11 with loss: 1.6185, mse: 1.6185, val_loss: 1.5911, val_mse: 1.5911 and a STRAIGHT LINE GRAPH were produced =(
 <p align="center">
   <img width="440" src="https://github.com/snaffisah/Customer-Segmentation-Using-Deep-Learning/blob/main/Image/train_val%20loss.png">
 </p>
