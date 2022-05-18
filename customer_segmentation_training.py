@@ -46,6 +46,11 @@ train.head()
 train[train.duplicated()]
 
 # Check NaN value for all column
+fig, ax = plt.subplots(figsize=(10,10))
+sns.heatmap(train.isna())
+plt.show()
+plt.figure()
+
 train.isna().sum()
 
 # Replce with fillna method ffill and bfill
@@ -84,59 +89,75 @@ sns.heatmap(train.corr(), annot=True, cmap=plt.cm.Reds, linewidths=.5, ax=ax)
 plt.show()
 plt.figure()
 # Highly correlation Ever_Married,Age, Proffession
+# Low correlation ID
 
-x = train.drop(labels=['Segmentation'], axis=1) # features 
+
+x = train.drop(labels=['ID','Work_Experience','Segmentation'], axis=1) # features
+ # ID has low corr, Work_Experience has a lot of nan value
 y = train['Segmentation'] # target
 
-mms_scaler = MinMaxScaler()
-x = mms_scaler.fit_transform(x)
+# Step 5) Data Pre-processing
 
-# Train Test Split
-# x = review, y = sentiment
-x_train, x_test, y_train, y_test = train_test_split(x, y,
-                                                    test_size = 0.2,
-                                                    random_state = 123)
+# Min Max Scaler
+#mms_scaler = MinMaxScaler()
+#x = mms_scaler.fit_transform(x)
 
+x_train, x_test, y_train, y_test = train_test_split(x,y, test_size=0.2, 
+                                                    random_state=0)
+
+# Standard scaler
 sc = StandardScaler()
 x_train = sc.fit_transform(x_train)
 x_test = sc.transform(x_test)
 
+# Logistic regression method
 classifier = LogisticRegression(random_state = 0)
 classifier.fit(x_train, y_train)
 
+# prediction
 y_predict = classifier.predict(x_test)
+
+# Result of prediction model
 cm = confusion_matrix(y_test, y_predict)
+class_report = classification_report(y_test, y_predict)
+score = accuracy_score(y_test, y_predict)
+
+# Print result
 print(cm)
-print(accuracy_score(y_test, y_predict))
+print(class_report)
+print("The model accuracy is:" ,score*100,)
+
+#%% Callback
+
+log_dir = os.path.join(LOG_PATH, datetime.datetime.now().strftime('%Y%m%d-%H%M%S'))
+
+# tensorboard callback
+tensorboard_callback = TensorBoard(log_dir=log_dir)
+
+# early stopping callback
+early_stopping_callback = EarlyStopping(monitor='loss', patience=10)
 
 #%% DL model
 
 # Sequential
 
 model = Sequential()
-model.add(Input(shape=(10)))
+model.add(Dense(128, activation='relu', input_shape=(x_train.shape[1],)))
 model.add(Dense(64, activation='relu'))
 model.add(BatchNormalization())
+model.add(Dropout(0.2))
 model.add(Dense(32, activation='relu'))
 model.add(BatchNormalization())
-model.add(Dropout(0.3))
+model.add(Dropout(0.2))
 model.add(Dense(1, activation='softmax'))
 
-model.compile(optimizer='adam', loss='categorical_crossentropy', metrics='mse')
+model.compile(optimizer='adam', loss='mse', metrics='mse')
 model.summary()
 
-early_stopping_callback = EarlyStopping(monitor='val_loss', patience=10)
-
-
-log_dir = os.path.join(LOG_PATH, 
-                       datetime.datetime.now().strftime('%Y%m%d-%H%M%S'))
-
-tensorboard_callback = TensorBoard(log_dir=log_dir, histogram_freq=1)
-
-
-# model training
-hist = model.fit(x_train,y_train, epochs=100, validation_data=(x_test,y_test),
-                 callbacks=[early_stopping_callback])
+hist = model.fit(x_train, y_train, epochs=100, 
+#                 batch_size=128,
+                 validation_data=(x_test,y_test),
+                 callbacks=[tensorboard_callback, early_stopping_callback])
 
 # Model  compile loss = mse, mae, metrics = mse
 hist.history.keys()
@@ -163,7 +184,6 @@ plt.xlabel('epoch')
 plt.ylabel('Accuracy')
 plt.legend(['training mse', 'validation mse'])
 plt.show()
-
 
 #%% Model Deployment
 model.save(MODEL_SAVE_PATH)
