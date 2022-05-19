@@ -49,11 +49,12 @@ Sequential model with 3 dense layers and 1 output were used in this analysis:
 
 Model was trained until epoch 11 with loss: 1.6185, mse: 1.6185, val_loss: 1.5911, val_mse: 1.5911 and a STRAIGHT LINE GRAPH were produced =(
 <p align="center">
-  <img width="440" src="https://github.com/snaffisah/Customer-Segmentation-Using-Deep-Learning/blob/main/Image/train_val%20loss.png">
+  <img src="https://github.com/snaffisah/Customer-Segmentation-Using-Deep-Learning/blob/main/Image/TB%20graph.JPG">
 </p>
 
+This is the model workflow:
 <p align="center">
-  <img width="440" src="https://github.com/snaffisah/Customer-Segmentation-Using-Deep-Learning/blob/main/Image/train_val%20mse.png">
+  <img src="https://github.com/snaffisah/Customer-Segmentation-Using-Deep-Learning/blob/main/Image/model%20layer.JPG">
 </p>
 
 NOTE: Trying to restart spyder, but output still same. Probably I do mistake with the Input. Please do check for me. TQ
