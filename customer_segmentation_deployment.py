@@ -26,7 +26,7 @@ model.summary()
 #%% Deploy
 df_test = pd.read_csv(DATASET_TEST)
 
-test.info() 
+df_test.info() 
 # from info, we found that there is missing data for Ever_Married, Graduated, 
 # Profession, Work_experience, Family_size, Var_1. Also, there are total of 
 # 7 columns in Strings datatype. Total dataset is 8068 with 11 column
@@ -97,8 +97,8 @@ Segmentation_dict = {0:'A', 1:'B', 2:'C', 3:'D'}
 y_new = (pd.Series(newy, name='Segmentation')).map(Segmentation_dict)
 
 # Combine column
-df_test = test.drop(labels=['Segmentation'],axis=1)
-result = pd.concat([df_test,y_new], axis=1)
+column_test = df_test.drop(labels=['Segmentation'],axis=1)
+result = pd.concat([column_test,y_new], axis=1)
 print(result)
 
 result.info()
