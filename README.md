@@ -2,7 +2,7 @@
 (Still need a lot of improvement! Please read 1st)
 
 ## Description
-Objective: Create a classifier model to group customer's data using deep learning and return result in a new csv file
+Objective: Create a classifier model to identify group for customer using deep learning and return result in a new csv file
 
 * Model training - Deep learning
 * Method: Sequential
